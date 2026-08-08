@@ -1,0 +1,514 @@
+{
+  "metadata": {
+    "name": "Cadre AI Knowledge Base",
+    "version": "1.0.0",
+    "last_verified": "2026-08-08",
+    "description": "Source-attributed knowledge items for the Cadre AI customer support chatbot.",
+    "retrieval_note": "Each knowledge item is an independently retrievable semantic unit. Embeddings should be generated from retrieval_text, while content remains the authoritative context supplied to the LLM.",
+    "source_policy": "Prefer official Cadre AI sources. Do not infer unsupported facts."
+  },
+  "knowledge": [
+    {
+      "id": "company_overview",
+      "category": "company",
+      "topic": "What Cadre AI does",
+      "retrieval_text": "Cadre AI is an AI strategy and implementation partner that helps businesses use artificial intelligence to drive revenue growth, improve profitability and EBITDA, and scale more efficiently. Cadre focuses on identifying business problems, finding appropriate AI solutions, implementing them, and measuring results.",
+      "content": "Cadre AI describes itself as an AI strategy and implementation partner focused on helping businesses use AI to drive revenue growth, improve profitability/EBITDA, and scale more efficiently. Its approach emphasizes understanding business problems, identifying appropriate solutions, implementing them, and measuring results rather than simply buying AI tools.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "core_services",
+      "category": "services",
+      "topic": "Core services",
+      "retrieval_text": "Cadre AI's core services are AI Strategy, AI Leadership & Facilitation, AI Engineering, and AI Agents.",
+      "content": "Cadre AI's core offerings are AI Strategy, AI Leadership & Facilitation, AI Engineering, and AI Agents.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/",
+      "source_type": "official_website_and_challenge_ground_truth",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "workflow_automation_and_custom_solutions",
+      "category": "services",
+      "topic": "Workflow automation and custom AI solutions",
+      "retrieval_text": "Cadre AI uses workflow automation and custom AI agents as part of its implementation work. Cadre does not necessarily build a custom solution for every problem; it considers existing tools first, then automation and integration, and builds custom solutions when appropriate.",
+      "content": "Cadre's implementation work includes workflow automation and custom AI agents. Its approach is not to build a custom solution for every problem. Depending on the business need, Cadre may recommend an existing tool, automate or integrate existing systems, or build a custom AI agent or solution when that is the appropriate option.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "getting_started",
+      "category": "getting_started",
+      "topic": "How to get started",
+      "retrieval_text": "Cadre typically starts by understanding a company's business, teams, processes, technology, and AI opportunities before selecting tools. Prospective clients can speak with an AI strategist to discuss their situation and determine the appropriate next step.",
+      "content": "Cadre typically starts by understanding the business, teams, processes, technology, and potential AI opportunities rather than immediately selecting a tool. A prospective client can speak with an AI strategist to discuss their situation and determine the appropriate next step.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_transformation_intensive",
+      "category": "getting_started",
+      "topic": "AI Transformation Intensive",
+      "retrieval_text": "Cadre advertises an AI Transformation Intensive, described as a structured 45-day program intended to take a company from lack of clarity to a prioritized roadmap that can be executed.",
+      "content": "Cadre currently advertises an AI Transformation Intensive described as a structured 45-day program intended to take a company from lack of clarity to a prioritized roadmap that can be executed.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_transformation_process",
+      "category": "getting_started",
+      "topic": "AI Transformation Intensive process",
+      "retrieval_text": "Cadre's AI Transformation Intensive process consists of Discover Use Cases, Survey the Landscape, Implement Solutions, and Scale with Confidence. Discovery involves interviewing teams, identifying business problems, estimating ROI, and prioritizing opportunities based on impact and feasibility.",
+      "content": {
+        "steps": [
+          "Discover Use Cases",
+          "Survey the Landscape",
+          "Implement Solutions",
+          "Scale with Confidence"
+        ],
+        "discovery_details": [
+          "Interview teams",
+          "Identify business problems",
+          "Estimate ROI",
+          "Prioritize opportunities based on impact and feasibility"
+        ]
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "service_pricing",
+      "category": "commercial",
+      "topic": "Service pricing",
+      "retrieval_text": "Cadre AI does not appear to publish standard pricing for its core AI strategy and implementation services. Pricing depends on the company's needs and engagement.",
+      "content": "Cadre does not appear to publish standard pricing for its core AI strategy and implementation services. The chatbot should not provide a specific Cadre service price unless an authoritative source is added to the knowledge base. Public references to approximately $30 per employee per month relate to an AI command-center example and should not be presented as Cadre's service pricing.",
+      "status": "not_publicly_available",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website_review",
+      "escalation_required": true,
+      "escalation_reason": "Pricing is not publicly documented. Direct the user to an AI strategist.",
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_maturity_index_overview",
+      "category": "assessment",
+      "topic": "AI Maturity Index",
+      "retrieval_text": "Cadre's AI Maturity Index scores a company across an eight-pillar framework for AI transformation, providing a grade in each area along with explanations and actionable insights for improvement.",
+      "content": "Cadre's AI Maturity Index evaluates an organization across an eight-pillar framework for AI transformation. It provides a grade in each area along with explanations and actionable insights for improvement.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_maturity_index_pillars",
+      "category": "assessment",
+      "topic": "AI Maturity Index eight pillars",
+      "retrieval_text": "The eight pillars of Cadre's AI transformation framework are: Build your dedicated AI team; Deploy your AI Command Center; Create an AI-First Culture Shift; Connect & Enable your Tech Stack; AI-Healthy Data Assessment; Build your Framework for AI Agent Readiness; Departmental AI Deep Dives; Find your 3-Year AI Vision.",
+      "content": {
+        "pillars": [
+          {
+            "number": 1,
+            "name": "Build your dedicated AI team",
+            "focus": "Leadership and team structure"
+          },
+          {
+            "number": 2,
+            "name": "Deploy your AI Command Center",
+            "focus": "AI tools and centralized AI access"
+          },
+          {
+            "number": 3,
+            "name": "Create an AI-First Culture Shift",
+            "focus": "Organizational adoption and policy"
+          },
+          {
+            "number": 4,
+            "name": "Connect & Enable your Tech Stack",
+            "focus": "Technology and API readiness"
+          },
+          {
+            "number": 5,
+            "name": "AI-Healthy Data Assessment",
+            "focus": "Data quality and readiness"
+          },
+          {
+            "number": 6,
+            "name": "Build your Framework for AI Agent Readiness",
+            "focus": "AI agent readiness"
+          },
+          {
+            "number": 7,
+            "name": "Departmental AI Deep Dives",
+            "focus": "Department-specific AI opportunities"
+          },
+          {
+            "number": 8,
+            "name": "Find your 3-Year AI Vision",
+            "focus": "Long-term AI vision"
+          }
+        ]
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_maturity_index_scoring_gap",
+      "category": "assessment",
+      "topic": "AI Maturity Index scoring methodology",
+      "retrieval_text": "The exact scoring methodology, numerical thresholds, questionnaire length, and process for obtaining an AI Maturity Index score are not sufficiently documented in the researched public information.",
+      "content": "The researched public information does not provide enough detail to reliably explain the exact scoring methodology or how a company obtains a score. The chatbot must not invent scoring percentages, numerical thresholds, questionnaire length, or an exact assessment methodology.",
+      "status": "not_publicly_available",
+      "source": "https://www.cadreai.com/",
+      "source_type": "official_website_review",
+      "escalation_required": true,
+      "escalation_reason": "Direct the user to a Cadre AI strategist for assessment/scoring details.",
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "strategy_call",
+      "category": "contact",
+      "topic": "How to book a strategy call",
+      "retrieval_text": "Cadre provides a Talk to an AI Strategist option on its website. Users can also contact Cadre at hello@gocadre.ai or through its contact page. A public scheduling URL was not identified in the researched information.",
+      "content": "Users can connect with a Cadre AI strategist through the 'Talk to an AI Strategist' option on Cadre's website. Cadre can also be contacted at hello@gocadre.ai or through its contact page. The researched public information did not expose a clear direct scheduling URL.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/contact",
+      "source_type": "official_website",
+      "contact": {
+        "email": "hello@gocadre.ai",
+        "phone": "(619) 324-3223",
+        "contact_page": "https://www.cadreai.com/contact"
+      },
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industries",
+      "category": "industries",
+      "topic": "Industries served",
+      "retrieval_text": "Cadre AI publicly lists Professional Services, Private Equity, Real Estate, Financial Services, Mortgage & Lending, Construction, Retail & E-commerce, Manufacturing & Logistics, and Hospitality. Cadre also states that it has worked with companies beyond the industries listed.",
+      "content": {
+        "industries": [
+          "Professional Services",
+          "Private Equity",
+          "Real Estate",
+          "Financial Services",
+          "Mortgage & Lending",
+          "Construction",
+          "Retail & E-commerce",
+          "Manufacturing & Logistics",
+          "Hospitality"
+        ],
+        "additional_context": "Cadre says it has worked with companies beyond the industries listed publicly."
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industry_real_estate",
+      "category": "industries",
+      "topic": "Real estate AI opportunities",
+      "retrieval_text": "Cadre describes AI opportunities for real estate including property analysis, lead qualification, transaction coordination, and market intelligence.",
+      "content": "For real estate, Cadre describes AI opportunities including property analysis, lead qualification, transaction coordination, and market intelligence.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries/real-estate",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industry_construction",
+      "category": "industries",
+      "topic": "Construction AI opportunities",
+      "retrieval_text": "Cadre describes AI opportunities for construction including takeoffs, estimating, project health, change orders, and resource planning.",
+      "content": "For construction, Cadre describes AI opportunities including takeoffs, estimating, project health, change orders, and resource planning.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries/construction",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industry_financial_services",
+      "category": "industries",
+      "topic": "Financial services AI opportunities",
+      "retrieval_text": "Cadre describes AI opportunities for financial services including KYC, client retention, regulatory tracking, portfolio recommendations, and risk assessment.",
+      "content": "For financial services, Cadre describes AI opportunities including KYC, client retention, regulatory tracking, portfolio recommendations, and risk assessment.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries/financial-services",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industry_manufacturing",
+      "category": "industries",
+      "topic": "Manufacturing AI opportunities",
+      "retrieval_text": "Cadre's public materials describe manufacturing AI opportunities including predictive maintenance, inventory optimization, and production scheduling. The researched material also emphasizes addressing foundational data and process problems before implementing AI.",
+      "content": "Cadre's public materials describe manufacturing AI opportunities including predictive maintenance, inventory optimization, and production scheduling. A manufacturing example also illustrates Cadre's emphasis on addressing foundational data and process problems before implementing AI.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "industry_outside_list",
+      "category": "industries",
+      "topic": "Industries beyond the public list",
+      "retrieval_text": "Cadre states that it has worked with companies beyond the industries listed on its public industries page and says it has worked with companies one might not expect to use AI.",
+      "content": "Cadre works across a range of industries and says it has worked with companies beyond the industries listed publicly. If a prospective client is in an industry not explicitly listed, the chatbot should not automatically say Cadre cannot help. It should ask about the business and problem and, when appropriate, direct the user to an AI strategist.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/industries",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "client_portal",
+      "category": "client_portal",
+      "topic": "Cadre client portal",
+      "retrieval_text": "Cadre provides a centralized portal to track AI tools, agents, training, and results.",
+      "content": "Cadre provides a centralized portal for tracking AI tools, agents, training, and results.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "client_portal_access_gap",
+      "category": "client_portal",
+      "topic": "Client portal access and login",
+      "retrieval_text": "Public information does not document the Cadre client portal login URL, password reset process, authentication method, account creation process, or client-specific permissions.",
+      "content": "Exact client portal login and account-access instructions are not publicly documented in the researched information. The chatbot must not invent a login URL, password-reset process, authentication method, account creation procedure, or client-specific permissions.",
+      "status": "not_publicly_available",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website_review",
+      "escalation_required": true,
+      "escalation_reason": "Direct the client to Cadre at hello@gocadre.ai for account or portal-access assistance.",
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "llm_selection",
+      "category": "technology",
+      "topic": "LLM selection approach",
+      "retrieval_text": "Cadre takes a use-case-driven approach to LLM selection rather than assuming one model is best for every business. Its public materials describe choosing the right LLM for the business and considering platforms such as ChatGPT, Microsoft Copilot, and Claude.",
+      "content": "Cadre takes a use-case-driven approach to LLM selection rather than treating one model as universally appropriate. Its public materials describe choosing the right LLM for the business and considering platforms such as ChatGPT, Microsoft Copilot, and Claude as part of a company's AI environment.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/ai-engineering",
+      "source_type": "official_website",
+      "partners": [
+        "OpenAI",
+        "Anthropic / Claude",
+        "Google",
+        "Microsoft",
+        "AWS",
+        "Salesforce",
+        "Snowflake",
+        "OpenRouter"
+      ],
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "data_security",
+      "category": "security",
+      "topic": "Data security approach",
+      "retrieval_text": "Cadre's public materials describe selecting an LLM appropriate for the business use case, black-boxing company data so it is not used to train other models, preventing employees from putting company secrets into personal LLM accounts, and moving teams toward secure, compliant AI tools.",
+      "content": "Cadre's public materials describe an approach that includes selecting an LLM appropriate for the business and use case, 'black-boxing' company data so it is not used to train other models, preventing employees from putting company secrets into personal LLM accounts, and getting teams onto secure, compliant AI tools.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/ai-engineering",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "limitations": [
+        "Do not claim Cadre guarantees complete data security unless an authoritative source supports the claim.",
+        "Do not claim SOC 2 compliance unless an authoritative source supports the claim.",
+        "Do not invent specific security certifications, contractual guarantees, or technical controls."
+      ],
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "ai_healthy_data",
+      "category": "technology",
+      "topic": "AI-Healthy Data Assessment",
+      "retrieval_text": "Cadre treats clean and structured data as an important prerequisite for effective AI and describes an AI-Healthy Data Assessment as part of its AI transformation framework.",
+      "content": "Cadre treats clean, structured data as an important prerequisite for effective AI and describes an AI-Healthy Data Assessment as part of its AI transformation framework.",
+      "status": "verified",
+      "source": "https://www.cadreai.com/strategy",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "case_study_hospitality",
+      "category": "case_studies",
+      "topic": "Hospitality booking visibility case study",
+      "retrieval_text": "Cadre describes an AI-powered booking visibility system for hospitality that replaced an Excel-based system, integrated with an existing CRM, provided real-time booking visibility, and prevented conflicting same-day bookings. The case study reports $420,000 in annual savings.",
+      "content": {
+        "industry": "Hospitality",
+        "solution": [
+          "AI-powered booking visibility",
+          "Replaced an Excel-based system",
+          "Integrated with an existing CRM",
+          "Provided real-time booking visibility",
+          "Prevented conflicting same-day bookings"
+        ],
+        "reported_result": "$420,000 in annual savings"
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/case-studies",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "case_study_professional_services",
+      "category": "case_studies",
+      "topic": "Professional services voice and chat agents case study",
+      "retrieval_text": "Cadre describes AI voice and chat agents for professional services that handled consultation requests, checked availability, coordinated scheduling, and automated booking. The case study reports 1,500 hours saved annually and 500–700 appointment requests processed automatically per month.",
+      "content": {
+        "industry": "Professional Services",
+        "solution": [
+          "AI voice agents",
+          "AI chat agents",
+          "Consultation request handling",
+          "Availability checking",
+          "Scheduling coordination",
+          "Automated booking"
+        ],
+        "reported_results": [
+          "1,500 hours saved annually",
+          "500–700 appointment requests processed automatically per month"
+        ]
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/case-studies",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "case_study_mortgage",
+      "category": "case_studies",
+      "topic": "Mortgage and lending chatbot case study",
+      "retrieval_text": "Cadre describes a custom AI chatbot for mortgage and lending that unified loan-related tools and provided guideline access, investor matching, and borrower communications. The case study describes reducing processing from 1–2 days to rapid approvals with real-time updates.",
+      "content": {
+        "industry": "Mortgage & Lending",
+        "solution": [
+          "Custom AI chatbot",
+          "Guideline access",
+          "Investor matching",
+          "Borrower communications"
+        ],
+        "reported_result": "Processing was reduced from 1–2 days to rapid approvals with real-time updates."
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/case-studies",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "case_study_manufacturing",
+      "category": "case_studies",
+      "topic": "Manufacturing AI readiness and scheduling case study",
+      "retrieval_text": "Cadre describes a $120M manufacturing company that initially wanted predictive maintenance but had fragmented maintenance data, paper records, Excel files, and manually managed schedules. Cadre first addressed foundational data and process problems. The resulting system reportedly saved 15 hours per week in manual scheduling and improved project profitability by 12%.",
+      "content": {
+        "industry": "Manufacturing",
+        "company_description": "$120M manufacturing company",
+        "initial_need": "Predictive maintenance",
+        "challenges": [
+          "Fragmented maintenance data",
+          "Paper records",
+          "Excel files",
+          "Manually managed schedules"
+        ],
+        "approach": "Address foundational data and process problems before implementing AI.",
+        "reported_results": [
+          "15 hours per week saved in manual scheduling",
+          "12% improvement in project profitability"
+        ]
+      },
+      "status": "verified",
+      "source": "https://www.cadreai.com/articles/your-systems-are-not-ready-for-ai",
+      "source_type": "official_website",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    },
+    {
+      "id": "cadre_partners",
+      "category": "company",
+      "topic": "Technology partners and ecosystem",
+      "retrieval_text": "The challenge ground truth identifies Cadre's key technology partners and ecosystem as OpenAI, Anthropic (Claude), Google, Microsoft, AWS, Salesforce, Snowflake, and OpenRouter.",
+      "content": {
+        "partners": [
+          "OpenAI",
+          "Anthropic (Claude)",
+          "Google",
+          "Microsoft",
+          "AWS",
+          "Salesforce",
+          "Snowflake",
+          "OpenRouter"
+        ]
+      },
+      "status": "verified",
+      "source": "challenge_ground_truth",
+      "source_type": "assessment_document",
+      "escalation_required": false,
+      "last_verified": "2026-08-08"
+    }
+  ],
+  "response_policy": {
+    "verified_information": "The chatbot may use verified knowledge items to answer factual Cadre-specific questions.",
+    "not_publicly_available": "The chatbot must not invent missing information. If a retrieved item has status 'not_publicly_available' and escalation_required is true, the chatbot should explain the limitation and redirect the user to an appropriate Cadre contact.",
+    "unknown_questions": "If no sufficiently relevant verified knowledge item is retrieved, the chatbot should not answer from general model knowledge as though it were Cadre-specific information. It should acknowledge the limitation and escalate or redirect when appropriate.",
+    "client_specific_information": "Do not invent client-specific portal access, credentials, permissions, account details, or other private information.",
+    "pricing": "Do not provide Cadre service pricing unless a future authoritative source is explicitly added and marked verified.",
+    "ai_maturity_scoring": "Do not invent numerical scoring, thresholds, questionnaire length, or exact assessment methodology.",
+    "security_claims": "Do not infer certifications, compliance status, guarantees, or technical security controls that are not explicitly supported by authoritative knowledge.",
+    "source_preference": [
+      "official Cadre AI website",
+      "challenge-provided ground truth",
+      "other authoritative Cadre-provided sources"
+    ]
+  },
+  "escalation": {
+    "email": "hello@gocadre.ai",
+    "phone": "(619) 324-3223",
+    "contact_page": "https://www.cadreai.com/contact",
+    "strategy_cta": "Talk to an AI Strategist",
+    "recommended_for": [
+      "Service pricing questions",
+      "Client portal access problems",
+      "Questions requiring client-specific information",
+      "Questions about exact AI Maturity Index scoring methodology",
+      "Questions for which no sufficiently relevant verified knowledge is available"
+    ]
+  }
+}
