@@ -1,12 +1,11 @@
-from pathlib import Path
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=str(REPO_ROOT / ".env"), extra="ignore")
+    # ".env" is resolved relative to the process's working directory (repo root
+    # for local runs). In Docker no .env file is shipped; real env vars passed
+    # via `docker run -e` / `--env-file` are used instead and take precedence.
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     openrouter_api_key: str
     openrouter_model: str = "openai/gpt-4o-mini"

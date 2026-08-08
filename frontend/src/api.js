@@ -1,4 +1,7 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+// Empty string = same-origin (used when the backend serves the built frontend,
+// e.g. in the single Docker container). Overridden for local `npm run dev`
+// via frontend/.env.development.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export async function sendChatMessage(message, history) {
   const response = await fetch(`${API_BASE_URL}/api/chat`, {

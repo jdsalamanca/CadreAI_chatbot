@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.chat import router as chat_router
 from app.config import settings
@@ -20,3 +23,10 @@ app.include_router(chat_router, prefix="/api")
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok"}
+
+
+# Populated by the Docker build (frontend build output copied to /app/static).
+# Absent in local dev, where the frontend runs separately via `npm run dev`.
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+if STATIC_DIR.exists():
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="frontend")
