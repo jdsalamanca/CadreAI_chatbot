@@ -657,16 +657,33 @@ Completed:
   `top_k=3`), `RETRIEVAL_SIMILARITY_THRESHOLD=0.5` calibrated against a clear score gap between genuine
   matches (≥0.59) and off-topic queries (≤0.48). See `ARCHITECTURE.md` for full results and trade-offs.
 
+- Knowledge policy layer implemented (`app/knowledge/policy.py`): filters retrieval hits by
+  `RETRIEVAL_SIMILARITY_THRESHOLD`, inspects `status`/`escalation_required`, and builds the per-query
+  context block handed to the LLM — verified items pass their `content` through, gap items are paired with
+  their escalation guidance, and "no relevant result" produces an explicit non-fabrication instruction
+  instead of asking the LLM to guess.
+- `KnowledgeRetriever` wired into `ChatbotService` via `KnowledgePolicy`; the live `/api/chat` endpoint now
+  performs real retrieval on every request.
+- System prompt rewritten per Phase 6 (`app/services/prompts.py`): grounding rules, escalation-only-via-
+  provided-contact-info, prompt-injection resistance, and an instruction not to surface internal retrieval
+  metadata (scores/thresholds/FAISS/embeddings) to the end user.
+- Error handling added for embedding/retrieval failures (`KnowledgeRetrievalError` → 502), on top of the
+  existing LLM timeout/unavailable handling.
+- Manually verified against real OpenRouter calls: grounded answers, correct pricing/SOC2/scoring-method
+  escalation (no fabrication), accurate case-study/industry answers, and prompt-injection resistance (system
+  prompt/API key not revealed). One minor observed rough edge: a deliberately adversarial compound question
+  mixing a legitimate LLM-selection question with a request for the internal retrieval score produced a
+  slightly confused (but not fact-inventing) answer — noted as a possible future prompt refinement, not a
+  grounding failure.
+- Added 19 new tests (32 total, all passing): policy layer, chatbot message construction, and chat API
+  (mocked LLM + one test through the real retriever/policy).
+
 Next:
 
-1. Wire `KnowledgeRetriever` into `ChatbotService` (currently implemented and tested standalone, but the
-   live `/api/chat` endpoint doesn't call it yet).
-2. Implement the grounding/policy layer (Phase 5: inspect `status`/`escalation_required`, safe fallback when
-   no relevant result clears the threshold).
-3. Rewrite the system prompt per Phase 6's requirements (grounding, escalation, no mention of
-   RAG/embeddings/FAISS/scores to the end user).
-4. Update the chat API response schema if needed (e.g. `escalation_required`).
-5. Update the React chat UI for CTA/escalation behavior (Phase 8).
-6. Add remaining tests (policy layer, API-level with mocked OpenRouter).
-7. Document and polish (README per Phase 11).
-8. Final end-to-end evaluation against the Phase 10 question list.
+1. Update the chat API response schema if useful for the frontend (e.g. `escalation_required`, to drive a
+   CTA button instead of relying on the assistant's text).
+2. Update the React chat UI for CTA/escalation behavior (Phase 8).
+3. Document and polish (README per Phase 11).
+4. Final end-to-end evaluation against the full Phase 10 question list.
+5. Before real deployment: pre-fetch the embedding model into the Docker image (currently downloaded from
+   Hugging Face on first container start, which needs outbound network access).
