@@ -1,564 +1,672 @@
+# PLAN.md
+
 # Cadre AI Chatbot — Implementation Plan
 
-## Objective
+## 1. Objective
 
-Build and deploy a customer support chatbot for Cadre AI that can handle common inbound questions from prospective and existing clients.
+Build a React + FastAPI chatbot for Cadre AI that can answer prospective and existing-client questions using a curated, source-attributed knowledge base.
 
-The chatbot should provide useful answers about Cadre AI while maintaining a clear boundary around information it does not know.
+The chatbot should demonstrate:
 
-The target is a focused, production-quality MVP that can be completed within the recommended 4–6 hour build window.
+- Semantic retrieval
+- Grounded LLM responses
+- Knowledge verification
+- Explicit handling of unknown information
+- Escalation when appropriate
+- Clean software architecture
+- Good frontend UX
+- Sensible engineering trade-offs
+
+The goal is a reliable MVP rather than an unnecessarily complex production platform.
 
 ---
 
-# Phase 0 — Project Setup
+# 2. Core User Scenarios
 
-## Goals
+The chatbot must handle at least the following scenarios.
 
-Establish the development environment and AI-assisted development workflow before implementing application features.
+### Company and Services
+
+- What does Cadre AI do?
+- What services does Cadre provide?
+- Does Cadre build AI software?
+- How does Cadre decide whether to build something custom?
+
+### Getting Started
+
+- How do I get started with Cadre?
+- What is the AI Transformation Intensive?
+- What happens during the process?
+
+### Pricing
+
+- How much does Cadre cost?
+- What does AI Strategy cost?
+- How much does an AI agent cost?
+
+Expected behavior:
+Do not invent pricing. Explain that standard service pricing is not publicly available and direct the user toward an AI strategist.
+
+### AI Maturity Index
+
+- What is the AI Maturity Index?
+- What are the eight pillars?
+- How do I get scored?
+
+Expected behavior:
+Explain documented information. Do not invent the scoring methodology or numerical thresholds.
+
+### Strategy Calls
+
+- How do I book a strategy call?
+- How do I talk to an AI strategist?
+
+Expected behavior:
+Provide the documented CTA/contact information.
+
+### Industries
+
+- Do you work with manufacturing?
+- Does Cadre work with real estate?
+- Can you help financial services companies?
+- Do you work with my industry?
+
+Expected behavior:
+Use the industry knowledge and do not reject an industry merely because it is not in the public list.
+
+### Client Portal
+
+- How do I access the Cadre portal?
+- Where do I log in?
+- I forgot my portal password.
+
+Expected behavior:
+Explain what the portal is known to provide, but do not invent login information. Escalate.
+
+### LLM Selection
+
+- What LLMs does Cadre use?
+- How does Cadre choose an LLM?
+- Do you use Claude/OpenAI/etc.?
+
+Expected behavior:
+Explain the use-case-driven model-selection approach using only supported information.
+
+### Security
+
+- How does Cadre protect our data?
+- Is our data used to train models?
+- Is Cadre SOC 2 compliant?
+
+Expected behavior:
+Answer only claims supported by the knowledge base. Do not invent certifications or guarantees.
+
+### Case Studies
+
+- Do you have manufacturing examples?
+- What has Cadre done for professional services?
+- Do you have examples in hospitality?
+- What results have Cadre achieved?
+
+Expected behavior:
+Retrieve the most relevant case studies and clearly identify reported results as case-study results.
+
+### Unknown Questions
+
+- Questions unrelated to Cadre
+- Questions about unsupported Cadre facts
+- Questions requiring private/client-specific information
+
+Expected behavior:
+Do not hallucinate. Explain the limitation and redirect/escalate where appropriate.
+
+---
+
+# 3. Architecture
+
+```text
+                 React Frontend
+                       │
+                       │ POST /api/chat
+                       ▼
+                 FastAPI Backend
+                       │
+                       ▼
+                Chatbot Service
+                       │
+             ┌─────────┴─────────┐
+             ▼                   ▼
+       Knowledge Retriever    LLM Service
+             │                   │
+             ▼                   │
+        FAISS Index              │
+             │                   │
+             ▼                   │
+      Knowledge Repository       │
+             │                   │
+             ▼                   │
+     cadre_knowledge_base.json ──┘
+```
+
+The JSON is authoritative.
+
+The FAISS index is derived from the JSON.
+
+The LLM receives relevant `content` from retrieved knowledge items rather than the raw retrieval representation.
+
+---
+
+# 4. Knowledge Representation
+
+Each knowledge item is a semantic retrieval unit.
+
+Example:
+
+```json
+{
+  "id": "ai_maturity_index",
+  "category": "assessment",
+  "topic": "AI Maturity Index",
+  "retrieval_text": "...",
+  "content": "...",
+  "status": "verified",
+  "source": "...",
+  "escalation_required": false
+}
+```
+
+The important separation is:
+
+### Retrieval representation
+
+`retrieval_text`
+
+Used to generate embeddings.
+
+### Authoritative representation
+
+`content`
+
+Used as context for the LLM.
+
+### Policy metadata
+
+`status`, `escalation_required`, `escalation_reason`, etc.
+
+Used by the application to determine how retrieved information may be used.
+
+---
+
+# 5. Phase 1 — Project Setup
 
 ## Tasks
 
-- Initialize Git repository.
-- Initialize React frontend.
-- Initialize Python/FastAPI backend.
-- Establish frontend/backend directory structure.
-- Create `.gitignore`.
-- Configure environment variable handling.
-- Create `CLAUDE.md`.
-- Create this `PLAN.md`.
-- Configure basic linting/type checking/testing.
-- Establish initial README.
+- Initialize repository.
+- Create React/Vite frontend.
+- Create FastAPI backend.
+- Establish project structure.
+- Add `.gitignore`.
+- Add `.env.example`.
+- Add initial README.
+- Add `CLAUDE.md`.
+- Add `PLAN.md`.
 
-## Acceptance Criteria
+## Definition of Done
 
-- Frontend runs locally.
-- Backend runs locally.
-- Frontend can communicate with backend.
-- Secrets are handled through environment variables.
-- Basic development checks work.
+The frontend and backend can start independently and communicate successfully.
 
 ---
 
-# Phase 1 — Cadre AI Knowledge Research
+# 6. Phase 2 — Knowledge Repository
 
-## Goal
+## Tasks
 
-Research publicly available information about Cadre AI before deciding how the chatbot's knowledge should be represented.
+Implement a knowledge repository responsible for:
 
-The challenge explicitly leaves the chatbot's knowledge boundary and scope as an engineering decision.
+- Loading `cadre_knowledge_base.json`
+- Validating the structure
+- Exposing knowledge items by ID
+- Providing the collection of retrievable items
 
-## Research Areas
-
-Investigate, where publicly available:
-
-- Company overview
-- What Cadre AI does
-- Core services
-- Industries served
-- AI Strategy
-- AI Leadership & Facilitation
-- AI Engineering
-- AI Agents
-- AI Maturity Index
-- How users can get started
-- How to book a strategy call
-- Case studies
-- Service/pricing information
-- LLM/model selection approach
-- Data security
-- Client portal
-- Relevant FAQs
-- Other information needed to answer the scenarios described in the challenge
-
-## Research Requirements
-
-For each factual claim:
-
-- Record the source.
-- Prefer primary Cadre AI sources.
-- Do not infer unsupported facts.
-- Distinguish explicit claims from interpretation.
-- Record information that could not be verified.
-
-## Deliverables
-
-Create a research directory containing the raw research and sources.
-
-Example:
-
-```text
-research/
-├── cadre_research.md
-├── sources.md
-└── knowledge_gaps.md
-```
-
-Do not directly convert unreviewed web research into production chatbot knowledge.
-
-## Acceptance Criteria
-
-- Major chatbot-relevant Cadre topics have been researched.
-- Sources are documented.
-- Knowledge gaps are documented.
-- Potentially conflicting information is identified.
-- Research has been reviewed before implementation.
-
----
-
-# Phase 2 — Knowledge Architecture Decision
-
-## Goal
-
-Determine how the researched information should be represented and retrieved.
-
-Do not assume a specific architecture before analyzing the research.
-
-## Analyze
-
-Evaluate:
-
-- Total corpus size
-- Number of documents/pages
-- Amount of structured information
-- Amount of unstructured information
-- Average document length
-- Expected future growth
-- Frequency of updates
-- Retrieval requirements
-- Context-window requirements
-- Latency implications
-- Implementation complexity
-
-## Candidate Architectures
-
-### Option A — Structured Knowledge
-
-Use JSON or another structured representation when the knowledge corpus is small and mostly structured.
-
-Example:
-
-```text
-knowledge.json
-    ↓
-KnowledgeService
-    ↓
-Relevant context
-    ↓
-LLM
-```
-
-### Option B — Structured + Document Retrieval
-
-Use structured data for facts and semantic retrieval for longer documents such as case studies.
-
-Example:
-
-```text
-Structured knowledge ──┐
-                       ├── KnowledgeService → LLM
-Documents → embeddings ┘
-```
-
-### Option C — Full Semantic Retrieval
-
-Use embeddings and a vector store when the corpus is sufficiently large or unstructured to justify retrieval.
-
-Example:
-
-```text
-Documents
-    ↓
-Chunks
-    ↓
-Embeddings
-    ↓
-Vector store
-    ↓
-Relevant context
-    ↓
-LLM
-```
-
-## Decision
-
-Select the simplest architecture that reliably supports the researched corpus.
-
-Document:
-
-- Selected architecture
-- Alternatives considered
-- Why the selected architecture is appropriate
-- Limitations
-- Conditions that would justify migrating to a more advanced retrieval architecture
-
-## Acceptance Criteria
-
-The knowledge architecture decision is documented before implementation.
-
----
-
-# Phase 3 — Implement Knowledge Layer
-
-## Goal
-
-Implement the selected knowledge architecture behind a clean abstraction.
-
-The chatbot should not depend directly on the underlying storage technology.
-
-## Design Principle
-
-Expose a simple interface conceptually similar to:
+Potential interface:
 
 ```python
-knowledge_service.get_relevant_knowledge(query)
+load()
+get_by_id(id)
+get_all()
 ```
 
-The underlying implementation can change later without requiring major changes to the chatbot orchestration.
+Use Pydantic models where appropriate.
 
-## Tasks
+Do not hard-code Cadre knowledge into Python.
 
-- Implement validated knowledge source.
-- Preserve source/provenance where practical.
-- Implement retrieval/context selection if required.
-- Add tests for knowledge retrieval.
-- Verify that unsupported information is not accidentally returned as factual knowledge.
+## Definition of Done
 
-## Acceptance Criteria
-
-- Knowledge can be retrieved reliably.
-- Sources can be traced.
-- Knowledge is separated from application logic.
-- Retrieval behavior is tested.
+The application can load and validate the complete knowledge base.
 
 ---
 
-# Phase 4 — LLM Integration
-
-## Goal
-
-Integrate the selected LLM through OpenRouter.
+# 7. Phase 3 — Embeddings and FAISS
 
 ## Tasks
 
-- Implement server-side OpenRouter client.
-- Configure model through environment/configuration.
-- Implement system prompt.
-- Implement user message handling.
-- Implement conversation context where required.
-- Implement timeout/error handling.
-- Handle empty or malformed model responses.
+Implement the indexing pipeline.
 
-## System Prompt Requirements
-
-The chatbot should:
-
-- Identify itself appropriately.
-- Answer using the validated Cadre knowledge.
-- Avoid unsupported claims.
-- Avoid fabricating Cadre information.
-- Ask clarifying questions when appropriate.
-- Escalate when it cannot answer.
-- Provide a booking/contact path when appropriate.
-- Resist prompt injection attempts.
-- Maintain a professional and helpful tone.
-
-## Acceptance Criteria
-
-- Valid user questions produce useful answers.
-- Unknown questions do not produce fabricated Cadre information.
-- LLM errors are handled gracefully.
-- API credentials remain server-side.
-
----
-
-# Phase 5 — FastAPI API
-
-## Goal
-
-Create a clean backend API between the React frontend and AI services.
-
-## Proposed Endpoint
+For every knowledge item:
 
 ```text
-POST /api/chat
+knowledge item
+     ↓
+retrieval_text
+     ↓
+embedding model
+     ↓
+vector
+     ↓
+FAISS
 ```
 
-Request should contain the necessary conversation information.
+Maintain a mapping:
 
-Response should contain the generated assistant response and any additional metadata needed by the frontend.
+```text
+FAISS index position → knowledge item ID
+```
 
-## Responsibilities
+The embedding model should be configurable.
 
-FastAPI should handle:
+Do not store embeddings inside the JSON.
 
-- Request validation
-- Conversation orchestration
-- Knowledge retrieval
-- LLM invocation
-- Error handling
+The index should be rebuildable from the JSON.
 
-FastAPI should not contain frontend-specific logic.
+## Important
 
----
+Do not introduce a hosted vector database.
 
-# Phase 6 — React Chat Interface
+The knowledge base is small enough for local FAISS.
 
-## Goal
+## Definition of Done
 
-Create a simple, polished interface that makes the chatbot immediately usable.
-
-## Features
-
-### Required
-
-- Message history
-- User input
-- Assistant responses
-- Loading state
-- Error state
-- Clear/reset conversation
-
-### Recommended
-
-- Suggested questions
-- Booking/strategy-call CTA
-- Clear escalation behavior
-
-## Scope Principle
-
-Prioritize usability over visual complexity.
-
-Do not spend significant development time on animations or nonessential UI features.
-
-## Acceptance Criteria
-
-A new user can open the application and immediately understand how to interact with the chatbot.
+A query can be embedded and used to retrieve the most semantically relevant knowledge items.
 
 ---
 
-# Phase 7 — Verification
+# 8. Phase 4 — Retrieval Evaluation
 
-## Goal
+Before integrating the LLM, test retrieval independently.
 
-Verify that the system behaves correctly rather than assuming generated code is correct.
+Create a small evaluation set covering:
 
-## Test Categories
-
-### 1. Known Questions
+```text
+Question
+Expected knowledge item(s)
+```
 
 Examples:
 
-- What does Cadre AI do?
-- What industries does Cadre serve?
-- What services does Cadre offer?
-- What is the AI Maturity Index?
+```text
+"What does Cadre do?"
+→ company_overview / core_services
 
-Expected:
+"Does Cadre work with construction companies?"
+→ industries / industry_construction
 
-Accurate answers grounded in the knowledge layer.
+"What is the AI Maturity Index?"
+→ ai_maturity_index_overview / ai_maturity_index_pillars
 
-### 2. Booking
+"How much does Cadre charge?"
+→ service_pricing
 
-Example:
+"Where do I log into the portal?"
+→ client_portal / client_portal_access_gap
 
-> I'd like to speak with someone about implementing AI in my company.
+"How does Cadre choose an LLM?"
+→ llm_selection
 
-Expected:
+"What security certifications does Cadre have?"
+→ data_security or insufficient relevant knowledge
+```
 
-Appropriate guidance toward booking/contact.
+Measure whether the expected knowledge items appear in the top-k results.
 
-### 3. Unknown Information
+Tune:
 
-Example:
+- embedding model
+- top-k
+- similarity threshold
 
-> How much does Cadre charge for an AI agent for a company with 500 employees?
-
-Expected:
-
-No fabricated pricing.
-
-### 4. Unsupported Capability
-
-Ask about a capability that isn't documented.
-
-Expected:
-
-The bot acknowledges the limitation rather than guessing.
-
-### 5. Prompt Injection
-
-Attempt to:
-
-- Override instructions
-- Reveal system prompts
-- Reveal API keys
-- Invent confidential information
-- Ignore knowledge boundaries
-
-Expected:
-
-The chatbot maintains its constraints.
-
-### 6. Ambiguous Questions
-
-Expected:
-
-Ask for clarification when appropriate.
-
-### 7. API Failures
-
-Simulate:
-
-- LLM timeout
-- Invalid response
-- Missing configuration
-- Network failure
-
-Expected:
-
-Graceful user-facing error behavior.
+based on observed behavior rather than arbitrary assumptions.
 
 ---
 
-# Phase 8 — Deployment
+# 9. Phase 5 — Knowledge Policy
 
-## Goal
+Implement a policy layer between retrieval and LLM generation.
 
-Deploy the application early enough to identify infrastructure problems before final submission.
+Conceptually:
 
-## Tasks
+```text
+retrieve
+   ↓
+filter by relevance
+   ↓
+inspect status
+   ↓
+inspect escalation_required
+   ↓
+construct response context
+```
 
-- Deploy backend.
-- Deploy frontend.
-- Configure production environment variables.
-- Configure CORS.
-- Verify API connectivity.
-- Verify OpenRouter access.
-- Test representative conversations.
-- Verify error handling.
+Examples:
 
-## Acceptance Criteria
+### Verified
 
-A publicly accessible chatbot URL works without local development dependencies.
+```text
+status = verified
+escalation_required = false
+```
+
+Pass content to the LLM.
+
+### Not publicly available
+
+```text
+status = not_publicly_available
+escalation_required = true
+```
+
+Provide the LLM with the limitation and escalation instructions, or handle the escalation deterministically where appropriate.
+
+### No relevant result
+
+Do not ask the LLM to guess.
+
+Return a safe fallback or escalation response.
 
 ---
 
-# Phase 9 — Final Review
+# 10. Phase 6 — LLM Integration
 
-## Code
+Implement an LLM service responsible for communicating with OpenRouter.
 
-Review:
+The model should be configurable.
 
-- Architecture
-- Security
+Environment variables should include something similar to:
+
+```text
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=
+```
+
+Do not hard-code the API key.
+
+The system prompt should enforce:
+
+1. Answer using supplied Cadre knowledge.
+2. Do not invent facts.
+3. Do not infer unsupported claims.
+4. Be transparent when information is unavailable.
+5. Follow escalation instructions.
+6. Answer conversationally.
+7. Do not expose internal implementation details.
+
+The retrieved knowledge should be included as structured context.
+
+---
+
+# 11. Phase 7 — Chat API
+
+Implement:
+
+`POST /api/chat`
+
+Example request:
+
+```json
+{
+  "message": "What does Cadre AI do?"
+}
+```
+
+Example response:
+
+```json
+{
+  "message": "...",
+  "escalation_required": false
+}
+```
+
+The exact response schema can be adjusted as implementation progresses.
+
+Keep the API independent from the frontend.
+
+---
+
+# 12. Phase 8 — React Chat UI
+
+Build a simple professional interface.
+
+Required:
+
+- Chat history
+- User/assistant message distinction
+- Input field
+- Send action
+- Loading indicator
 - Error handling
-- Types
-- Unnecessary dependencies
-- Dead code
-- Logging
-- Configuration
-- API boundaries
+- Empty state
+- Responsive layout
 
-## AI Behavior
+Potential enhancement:
 
-Review:
+For strategy-call responses, make:
 
-- Hallucination risk
-- Unsupported claims
-- Prompt injection
-- Escalation behavior
-- Knowledge grounding
-- Answer quality
+**Talk to an AI Strategist**
 
-## Documentation
+a clickable CTA.
 
-Ensure repository contains:
-
-- `CLAUDE.md`
-- `PLAN.md`
-- `README.md`
-- Research/source documentation
-- Setup instructions
-- Architecture explanation
-- Environment variable instructions
-- Known limitations
-
-## Git
-
-Use focused, descriptive commits.
-
-Ensure no secrets or temporary files are committed.
+Do not invent a scheduling URL. Use only a verified URL available in the knowledge base or project configuration.
 
 ---
 
-# Final Scope
+# 13. Phase 9 — Testing
 
-## Must Have
+Implement tests for:
 
-- Working React frontend
-- Working FastAPI backend
-- OpenRouter LLM integration
-- Validated Cadre knowledge
-- Defined knowledge boundary
-- Unknown-question handling
-- Basic prompt-injection resistance
-- Error handling
-- Verification tests
-- Public deployment
-- CLAUDE.md
-- PLAN.md
-- README
+### Knowledge
 
-## Nice to Have
+- JSON loads correctly.
+- Invalid knowledge structures fail clearly.
 
-Only implement these if the core system is already stable:
+### Retrieval
 
-- Streaming responses
-- Source citations in the UI
-- Conversation persistence
-- User feedback
-- Analytics
-- More sophisticated retrieval
-- Embedding/vector search
+- Relevant queries return relevant items.
+- Irrelevant queries can fall below the threshold.
+- Correct knowledge IDs are returned.
 
-Do not sacrifice core reliability for these features.
+### Policy
+
+- Verified information can be used.
+- Pricing triggers the correct behavior.
+- Portal access does not invent instructions.
+- Unsupported scoring information is not invented.
+
+### API
+
+- Valid request succeeds.
+- Empty message is rejected.
+- External LLM errors are handled.
+- Unexpected errors do not expose stack traces.
+
+Mock OpenRouter calls.
 
 ---
 
-# Architectural Trade-Offs to Discuss During Review
+# 14. Phase 10 — Evaluation Questions
 
-Be prepared to explain:
+Before submission, manually test the chatbot with at least these questions:
 
-1. Why React + FastAPI?
-2. Why the selected LLM?
-3. Why the selected knowledge architecture?
-4. Why did you or did you not use embeddings/RAG?
-5. How did you determine the chatbot's knowledge boundary?
-6. How do you prevent hallucinations?
-7. How do you handle questions the bot cannot answer?
-8. How would the architecture change as Cadre's knowledge base grows?
-9. What did Claude Code generate?
-10. What did you modify or reject from Claude Code?
-11. How did you verify AI-generated code?
-12. What would you build next with additional development time?
+1. What does Cadre AI do?
+2. Does Cadre build AI software?
+3. How do I get started?
+4. What is the AI Transformation Intensive?
+5. How much does Cadre charge?
+6. What is the AI Maturity Index?
+7. What are the eight pillars?
+8. How do I get my AI Maturity score?
+9. How do I book a strategy call?
+10. Do you work with manufacturing?
+11. Do you work with an industry that isn't listed?
+12. How do I access the Cadre portal?
+13. What LLMs does Cadre use?
+14. How does Cadre choose an LLM?
+15. How does Cadre protect our data?
+16. Is Cadre SOC 2 compliant?
+17. Show me a manufacturing case study.
+18. Show me a professional services case study.
+19. What results has Cadre achieved?
+20. Ask an unrelated question.
+
+For each, verify:
+
+- Retrieval relevance
+- Factual accuracy
+- No hallucinations
+- Correct escalation
+- Natural response
+
+---
+
+# 15. Phase 11 — Documentation
+
+README should contain:
+
+## Overview
+
+What the chatbot does.
+
+## Architecture
+
+React → FastAPI → Retriever → FAISS → Knowledge Base → OpenRouter.
+
+## Knowledge Base
+
+Explain why JSON is the source of truth.
+
+## Retrieval
+
+Explain why `retrieval_text` is embedded rather than the entire JSON object.
+
+## Grounding
+
+Explain how verified and unavailable knowledge is handled.
+
+## Escalation
+
+Explain how unsupported questions and unavailable information are handled.
+
+## Setup
+
+Explain environment variables and how to run frontend/backend.
+
+## Testing
+
+Explain how to run tests.
+
+## Limitations
+
+Document:
+
+- Public knowledge limitations
+- Pricing not publicly available
+- Portal access information not publicly available
+- Exact AI Maturity scoring methodology not publicly available
+- Dependence on external LLM/API
+- Local FAISS architecture
+
+---
+
+# 16. Phase 12 — Final Review
+
+Before submission:
+
+- Remove secrets.
+- Verify `.env` is ignored.
+- Verify `.env.example` is present.
+- Run tests.
+- Run frontend.
+- Run backend.
+- Test the full chat flow.
+- Verify OpenRouter API usage.
+- Verify retrieval.
+- Verify escalation.
+- Review README.
+- Review CLAUDE.md.
+- Review PLAN.md.
+- Review git diff.
+- Remove unnecessary files.
+- Ensure the repository can be cloned and run by another developer.
+
+---
+
+# 17. Definition of Success
+
+The project is successful when:
+
+1. A user can have a natural conversation with the chatbot.
+2. Relevant Cadre information is retrieved semantically.
+3. The LLM produces grounded answers.
+4. The chatbot does not invent unsupported Cadre facts.
+5. Pricing questions are handled safely.
+6. Portal access questions are handled safely.
+7. AI Maturity Index questions are handled accurately.
+8. Industry questions are handled appropriately.
+9. Case studies are retrievable.
+10. Unknown questions trigger appropriate fallback/escalation.
+11. The code is clean and explainable.
+12. The project can be run by another developer from the README.
+13. The developer can explain the major architectural decisions during the Day 5 interview.
 
 ---
 
 # Current Status
 
-- [ ] Project initialized
-- [x] CLAUDE.md created
-- [x] PLAN.md created
-- [x] Cadre research completed
-- [ ] Knowledge corpus characterized
-- [ ] Knowledge architecture selected
-- [ ] Knowledge layer implemented
-- [ ] LLM integration implemented
-- [ ] FastAPI API implemented
-- [ ] React UI implemented
-- [ ] Verification tests implemented
-- [ ] Application deployed
-- [ ] Production smoke testing completed
-- [ ] README completed
-- [ ] Repository reviewed
-- [ ] Interview walkthrough prepared
+Completed:
+
+- Challenge requirements reviewed.
+- React + FastAPI selected.
+- JSON knowledge repository approach selected.
+- Semantic retrieval approach selected.
+- FAISS selected as the initial vector index.
+- `retrieval_text` selected as the only text to embed.
+- JSON remains the source of truth.
+- Verified/unavailable knowledge distinction established.
+- Explicit escalation behavior established.
+- Cadre knowledge base created.
+- Project structure initialized (React/Vite frontend, FastAPI backend, single-container Docker deployment,
+  all verified working end-to-end prior to knowledge integration).
+- `cadre_knowledge_base.json` integrated into `backend/app/knowledge/data/`.
+- Knowledge repository implemented (`KnowledgeRepository`: load, validate, `get_by_id`, `get_all`,
+  escalation info; unsupported-status items excluded automatically) — tested.
+- Embedding/indexing pipeline implemented (`indexer.py`: `fastembed` (ONNX) + local FAISS `IndexFlatIP` over
+  `retrieval_text`; FAISS-position → knowledge-item-ID mapping; index rebuilt from the repository at
+  construction time, never persisted, embeddings never stored in the JSON).
+- Semantic retrieval implemented (`retriever.py`: `KnowledgeRetriever.retrieve(query, top_k)`).
+- Retrieval evaluation set built and tuned (`app/knowledge/evaluation.py`,
+  `scripts/evaluate_retrieval.py`): 27-question eval set, 100% hit rate at `top_k=5` (started at 85.2% for
+  `top_k=3`), `RETRIEVAL_SIMILARITY_THRESHOLD=0.5` calibrated against a clear score gap between genuine
+  matches (≥0.59) and off-topic queries (≤0.48). See `ARCHITECTURE.md` for full results and trade-offs.
+
+Next:
+
+1. Wire `KnowledgeRetriever` into `ChatbotService` (currently implemented and tested standalone, but the
+   live `/api/chat` endpoint doesn't call it yet).
+2. Implement the grounding/policy layer (Phase 5: inspect `status`/`escalation_required`, safe fallback when
+   no relevant result clears the threshold).
+3. Rewrite the system prompt per Phase 6's requirements (grounding, escalation, no mention of
+   RAG/embeddings/FAISS/scores to the end user).
+4. Update the chat API response schema if needed (e.g. `escalation_required`).
+5. Update the React chat UI for CTA/escalation behavior (Phase 8).
+6. Add remaining tests (policy layer, API-level with mocked OpenRouter).
+7. Document and polish (README per Phase 11).
+8. Final end-to-end evaluation against the Phase 10 question list.
