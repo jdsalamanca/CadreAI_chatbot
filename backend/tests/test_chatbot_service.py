@@ -29,9 +29,14 @@ class FakeLLM:
     def __init__(self, reply: str = "hi there") -> None:
         self.reply = reply
         self.last_messages = None
+        self.web_search_messages = None
 
     async def generate_reply(self, messages: list[dict]) -> str:
         self.last_messages = messages
+        return self.reply
+
+    async def generate_reply_with_web_search(self, messages: list[dict]) -> str:
+        self.web_search_messages = messages
         return self.reply
 
 
@@ -95,3 +100,45 @@ def test_get_reply_uses_fallback_context_when_no_relevant_knowledge():
 
     context_message = llm.last_messages[1]["content"]
     assert "No verified Cadre-specific knowledge" in context_message
+
+
+def test_get_reply_uses_web_search_when_knowledge_is_unverified():
+    item = KnowledgeItem(
+        id="secret_pricing",
+        category="pricing",
+        topic="Pricing details",
+        retrieval_text="...",
+        content="Pricing is handled privately.",
+        status="not_publicly_available",
+        source="https://www.cadreai.com/",
+        source_type="official_website",
+        escalation_required=True,
+        escalation_reason="Pricing is not public.",
+    )
+    policy = FakePolicy(
+        PolicyResult(
+            relevant_items=[RetrievedItem(item=item, score=0.93)],
+            has_relevant_knowledge=True,
+            escalation_required=True,
+            escalation_info=ESCALATION_INFO,
+        )
+    )
+    llm = FakeLLM(reply="use search")
+    service = ChatbotService(llm, policy)
+
+    asyncio.run(service.get_reply("What does Cadre charge?", []))
+
+    assert llm.web_search_messages is not None
+    assert llm.last_messages is None
+    assert "Pricing details" in llm.web_search_messages[1]["content"]
+
+
+def test_get_reply_does_not_use_web_search_when_verified_rag_answer_exists():
+    policy = FakePolicy(make_relevant_policy_result())
+    llm = FakeLLM(reply="grounded answer")
+    service = ChatbotService(llm, policy)
+
+    asyncio.run(service.get_reply("What does Cadre do?", []))
+
+    assert llm.web_search_messages is None
+    assert llm.last_messages is not None
